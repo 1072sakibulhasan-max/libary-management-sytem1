@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — Premier University Library</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+  <img src="images/puc_logo.png" alt="Premier University Library Logo" style="width:40px; height:40px; object-fit:contain;">
+</div>
+    <h2>Premier University<br>Library</h2>
+    <p>Student Portal</p>
+  </div>
+  <div class="sidebar-user">
+    <div class="u-name" id="sideUser">Student</div>
+    <div class="u-role" id="sideInfo">—</div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Library</div>
+    <a class="nav-item active" onclick="showSection('home')"><span class="icon">🏠</span>Home</a>
+    <a class="nav-item" onclick="showSection('books')"><span class="icon">📖</span>Browse Books</a>
+    <a class="nav-item" onclick="showSection('mybooks')"><span class="icon">📤</span>My Issued Books</a>
+    <a class="nav-item" onclick="showSection('files')"><span class="icon">📁</span>Course Materials</a>
+    <a class="nav-item" onclick="showSection('notices')"><span class="icon">📢</span>Notifications</a>
+    <a class="nav-item" onclick="showSection('contact')"><span class="icon">✉️</span>Contact &amp; Feedback</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="logout-btn" onclick="PULib.logout()"><span>🚪</span>Logout</a>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <h3 id="pageTitle">Home</h3>
+    <div class="topbar-right"><span class="date" id="todayDate"></span></div>
+  </div>
+  <div class="content">
+
+    <!-- HOME -->
+    <section id="sec-home">
+      <div class="stat-grid" id="homeStats"></div>
+      <div class="panel">
+        <div class="panel-head"><h4>📢 Latest Notifications</h4></div>
+        <div class="panel-body" id="homeNotices"></div>
+      </div>
+    </section>
+
+    <!-- BOOKS -->
+    <section id="sec-books" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h4>Book Catalog</h4></div>
+        <div class="panel-body">
+          <div class="search-bar">
+            <input type="text" id="bookSearch" placeholder="Search title, author…" oninput="renderBooks()">
+            <select id="catFilter" onchange="renderBooks()">
+              <option value="">All Categories</option>
+              <option>CSE</option><option>EEE</option><option>Mathematics</option><option>Physics</option>
+            </select>
+          </div>
+          <table>
+            <thead><tr><th>#</th><th>Title</th><th>Author</th><th>Category</th><th>Available</th><th>PDF</th></tr></thead>
+            <tbody id="booksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY ISSUED BOOKS -->
+    <section id="sec-mybooks" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h4>My Issued Books</h4></div>
+        <div class="panel-body" style="padding:0;">
+          <table>
+            <thead><tr><th>#</th><th>Book</th><th>Issue Date</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody id="myBooksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSE MATERIALS -->
+    <section id="sec-files" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h4>Course Materials &amp; Resources</h4></div>
+        <div class="panel-body">
+          <div class="search-bar">
+            <input type="text" id="fileSearch" placeholder="Search materials…" oninput="renderFiles()">
+            <select id="fileCatFilter" onchange="renderFiles()">
+              <option value="">All Types</option>
+              <option>Course Notes</option><option>Lecture Slides</option><option>Assignment</option><option>Lab Manual</option><option>Book PDF</option><option>Other</option>
+            </select>
+          </div>
+          <table>
+            <thead><tr><th>Title</th><th>Type</th><th>Course</th><th>Uploaded</th><th>Download</th></tr></thead>
+            <tbody id="fileBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTICES -->
+    <section id="sec-notices" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h4>Library Notifications</h4></div>
+        <div class="panel-body" id="noticesList"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="sec-contact" style="display:none;">
+      <div id="contactAlert" class="alert"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap;">
+        <div class="panel">
+          <div class="panel-head"><h4>✉️ Contact Library</h4></div>
+          <div class="panel-body">
+            <div class="f-group" style="margin-bottom:12px;"><label>Your Name</label><input type="text" id="cName"></div>
+            <div class="f-group" style="margin-bottom:12px;"><label>Email</label><input type="email" id="cEmail"></div>
+            <div class="f-group" style="margin-bottom:12px;"><label>Message</label>
+              <textarea id="cMsg" rows="4" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;" placeholder="Write your message…"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="sendContact()">Send Message</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h4>💬 Submit Feedback</h4></div>
+          <div class="panel-body">
+            <div class="f-group" style="margin-bottom:12px;"><label>Your Name (optional)</label><input type="text" id="fbName"></div>
+            <div class="f-group" style="margin-bottom:12px;"><label>Feedback</label>
+              <textarea id="fbMsg" rows="4" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;" placeholder="Share your thoughts…"></textarea>
+            </div>
+            <button class="btn btn-gold" onclick="sendFeedback()">Submit Feedback</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <div class="main-footer">&copy; 2026 Premier University IT &nbsp;|&nbsp; Developed by <strong>Digiden IT</strong></div>
+</main>
+
+<script src="lib.js"></script>
+<script>
+var user = PULib.requireAuth('student');
+document.getElementById('sideUser').textContent = user.name||user.user;
+document.getElementById('sideInfo').textContent = (user.batch?user.batch+' · ':'')+('Section '+(user.section||''));
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
+var sections=['home','books','mybooks','files','notices','contact'];
+function showSection(name){
+  sections.forEach(s=>document.getElementById('sec-'+s).style.display=s===name?'block':'none');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+name+"'")));
+  var titles={home:'Home',books:'Browse Books',mybooks:'My Issued Books',files:'Course Materials',notices:'Notifications',contact:'Contact & Feedback'};
+  document.getElementById('pageTitle').textContent=titles[name]||name;
+  if(name==='home')renderHome();
+  else if(name==='books')renderBooks();
+  else if(name==='mybooks')renderMyBooks();
+  else if(name==='files')renderFiles();
+  else if(name==='notices')renderNotices();
+}
+
+function renderHome(){
+  var books=PULib.getBooks(),issues=PULib.getIssues();
+  var myIssues=issues.filter(i=>i.studentId===user.user&&!i.returned);
+  var overdue=myIssues.filter(i=>PULib.isOverdue(i.dueDate));
+  document.getElementById('homeStats').innerHTML=`
+    <div class="stat-card"><div class="s-icon">📚</div><div><div class="s-val">${books.length}</div><div class="s-lbl">Total Books</div></div></div>
+    <div class="stat-card" style="border-color:#27ae60"><div class="s-icon">✅</div><div><div class="s-val">${books.filter(b=>b.available>0).length}</div><div class="s-lbl">Available Now</div></div></div>
+    <div class="stat-card" style="border-color:#c9a84c"><div class="s-icon">📤</div><div><div class="s-val">${myIssues.length}</div><div class="s-lbl">Books I Have</div></div></div>
+    <div class="stat-card" style="border-color:#c0392b"><div class="s-icon">⚠️</div><div><div class="s-val">${overdue.length}</div><div class="s-lbl">Overdue</div></div></div>
+  `;
+  var notices=PULib.getNotices().slice(-3).reverse();
+  document.getElementById('homeNotices').innerHTML=notices.length?notices.map(n=>`
+    <div style="background:#f8f9fb;border-left:4px solid var(--royal);padding:12px 16px;border-radius:8px;margin-bottom:10px;">
+      <p style="font-size:0.9rem;">${PULib.escHtml(n.text)}</p>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">${PULib.formatDate(n.date)}</p>
+    </div>
+  `).join(''):'<p style="color:var(--muted)">No notifications yet.</p>';
+}
+
+function renderBooks(){
+  var search=document.getElementById('bookSearch').value.toLowerCase();
+  var cat=document.getElementById('catFilter').value;
+  var filtered=PULib.getBooks().filter(b=>{
+    var ms=!search||(b.title.toLowerCase().includes(search)||b.author.toLowerCase().includes(search));
+    var mc=!cat||b.category===cat;
+    return ms&&mc;
+  });
+  document.getElementById('booksBody').innerHTML=filtered.length?filtered.map(b=>`
+    <tr><td>${b.id}</td><td><strong>${PULib.escHtml(b.title)}</strong></td><td>${PULib.escHtml(b.author)}</td>
+    <td>${b.category}</td>
+    <td><span class="badge ${b.available>0?'badge-green':'badge-red'}">${b.available>0?b.available+' copies':'Unavailable'}</span></td>
+    <td>${b.fileData?`<a href="${b.fileData}" download="${PULib.escHtml(b.fileName||'book.pdf')}" class="btn btn-sm" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;">📄 Download</a>`:'—'}</td>
+    </tr>
+  `).join(''):'<tr><td colspan="6"><div class="empty-state"><div class="e-icon">📭</div><p>No books found.</p></div></td></tr>';
+}
+
+function renderMyBooks(){
+  var issues=PULib.getIssues().filter(i=>i.studentId===user.user);
+  document.getElementById('myBooksBody').innerHTML=issues.length?issues.slice().reverse().map(i=>`
+    <tr><td>#${i.id}</td><td>${PULib.escHtml(i.bookTitle)}</td><td>${PULib.formatDate(i.issueDate)}</td>
+    <td>${PULib.formatDate(i.dueDate)}</td>
+    <td>${i.returned?'<span class="badge badge-green">Returned</span>':PULib.isOverdue(i.dueDate)?'<span class="badge badge-red">Overdue</span>':'<span class="badge badge-gold">Active</span>'}</td></tr>
+  `).join(''):'<tr><td colspan="5"><div class="empty-state"><div class="e-icon">📭</div><p>No books issued to you yet.</p></div></td></tr>';
+}
+
+function renderFiles(){
+  var search=document.getElementById('fileSearch').value.toLowerCase();
+  var cat=document.getElementById('fileCatFilter').value;
+  var files=PULib.getFiles().filter(f=>f.access==='all').filter(f=>{
+    var ms=!search||(f.title.toLowerCase().includes(search)||(f.course&&f.course.toLowerCase().includes(search)));
+    var mc=!cat||f.category===cat;
+    return ms&&mc;
+  });
+  document.getElementById('fileBody').innerHTML=files.length?files.map(f=>`
+    <tr><td><strong>${PULib.escHtml(f.title)}</strong></td><td><span class="badge badge-blue">${f.category}</span></td>
+    <td>${PULib.escHtml(f.course||'—')}</td><td>${PULib.formatDate(f.uploadedDate)}</td>
+    <td><a href="${f.fileData}" download="${PULib.escHtml(f.fileName)}" class="btn btn-sm" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;">⬇ ${PULib.escHtml(f.fileName)}</a></td></tr>
+  `).join(''):'<tr><td colspan="5"><div class="empty-state"><div class="e-icon">📂</div><p>No materials available yet.</p></div></td></tr>';
+}
+
+function renderNotices(){
+  var notices=PULib.getNotices().slice().reverse();
+  document.getElementById('noticesList').innerHTML=notices.length?notices.map(n=>`
+    <div style="background:#f8f9fb;border-left:4px solid var(--royal);padding:12px 16px;border-radius:8px;margin-bottom:10px;">
+      <p style="font-size:0.9rem;">${PULib.escHtml(n.text)}</p>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">${PULib.formatDate(n.date)}</p>
+    </div>
+  `).join(''):'<p style="color:var(--muted)">No notifications.</p>';
+}
+
+function sendContact(){
+  var msg=document.getElementById('cMsg').value.trim();
+  if(!msg){PULib.showAlert('contactAlert','Please write a message.','error');return;}
+  var fb=PULib.getFeedback();
+  fb.push({id:PULib.nextId(fb),name:document.getElementById('cName').value.trim()||user.name||user.user,
+    email:document.getElementById('cEmail').value.trim(),message:msg,type:'contact',date:PULib.today()});
+  PULib.saveFeedback(fb);document.getElementById('cMsg').value='';
+  PULib.showAlert('contactAlert','Message sent to admin!','success');
+}
+function sendFeedback(){
+  var msg=document.getElementById('fbMsg').value.trim();
+  if(!msg){PULib.showAlert('contactAlert','Please write feedback.','error');return;}
+  var fb=PULib.getFeedback();
+  fb.push({id:PULib.nextId(fb),name:document.getElementById('fbName').value.trim()||'Anonymous',message:msg,type:'feedback',date:PULib.today()});
+  PULib.saveFeedback(fb);document.getElementById('fbMsg').value='';
+  PULib.showAlert('contactAlert','Feedback submitted! Thank you.','success');
+}
+
+renderHome();
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

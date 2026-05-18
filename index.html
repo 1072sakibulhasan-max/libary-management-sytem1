@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<!-- Made by: sakibul hasan | 0222410005101072 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premier University Library — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0a1628;--royal:#1a3a6b;--gold:#c9a84c;--gold-light:#f0d080;
+  --cream:#faf7f0;--white:#ffffff;--red:#c0392b;--green:#27ae60;
+  --text:#1a1a2e;--muted:#6b7280;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh;display:flex;flex-direction:column;}
+/* TOP NAV BAR */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,22,40,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,168,76,0.15);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.top-nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.top-nav .brand span{color:#fff;font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;}
+.top-nav .home-link{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;padding:6px 14px;border-radius:6px;transition:all 0.2s;}
+.top-nav .home-link:hover{color:var(--gold-light);background:rgba(255,255,255,0.07);}
+/* BG */
+.bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,var(--navy) 0%,var(--royal) 60%,#0d2147 100%);overflow:hidden;}
+.bg::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.bg-circle{position:absolute;border-radius:50%;background:rgba(201,168,76,0.06);animation:float 8s ease-in-out infinite;}
+.bg-circle:nth-child(1){width:400px;height:400px;top:-100px;right:-100px;animation-delay:0s;}
+.bg-circle:nth-child(2){width:300px;height:300px;bottom:-80px;left:-80px;animation-delay:-4s;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+/* LAYOUT */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:80px 20px 30px;}
+/* HEADER */
+.site-header{width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;}
+.logo-area{display:flex;align-items:center;gap:14px;}
+.logo-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 16px rgba(201,168,76,0.4);}
+.logo-text h1{font-family:'Playfair Display',serif;color:var(--white);font-size:1.3rem;font-weight:700;line-height:1.1;}
+.logo-text p{color:rgba(255,255,255,0.55);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;}
+.header-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+/* HERO */
+.hero-section{text-align:center;margin-bottom:30px;animation:fadeUp 0.7s ease both;}
+.hero-section h2{font-family:'Playfair Display',serif;color:var(--white);font-size:2.2rem;font-weight:900;line-height:1.2;margin-bottom:8px;}
+.hero-section h2 span{color:var(--gold);}
+.hero-section p{color:rgba(255,255,255,0.55);font-size:0.92rem;}
+/* BOX */
+.auth-box{width:100%;max-width:460px;background:rgba(255,255,255,0.97);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,0.4);overflow:hidden;animation:fadeUp 0.8s ease 0.1s both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+/* TABS */
+.tabs{display:flex;background:var(--navy);}
+.tab-btn{flex:1;padding:16px;border:none;background:transparent;color:rgba(255,255,255,0.5);font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.5px;transition:all 0.25s;border-bottom:3px solid transparent;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,0.08);}
+/* FORM BODY */
+.tab-body{padding:32px;display:none;}
+.tab-body.active{display:block;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:var(--text);transition:border-color 0.2s,box-shadow 0.2s;background:#fafafa;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--royal);box-shadow:0 0 0 3px rgba(26,58,107,0.1);background:var(--white);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--royal),var(--navy));color:var(--white);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;letter-spacing:0.5px;transition:all 0.25s;margin-top:8px;box-shadow:0 4px 14px rgba(26,58,107,0.35);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,58,107,0.45);}
+.msg{font-size:0.84rem;margin-top:10px;padding:8px 12px;border-radius:6px;display:none;}
+.msg.error{background:#fef2f2;color:var(--red);border:1px solid #fecaca;display:block;}
+.msg.success{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;display:block;}
+/* QUICK LOGIN */
+.quick-hint{margin-top:20px;padding-top:18px;border-top:1px solid #f0f0f0;font-size:0.78rem;color:var(--muted);}
+.quick-hint strong{color:var(--royal);}
+.hint-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.chip{background:#f0f4ff;color:var(--royal);padding:3px 10px;border-radius:12px;font-size:0.75rem;cursor:pointer;border:1px solid #dde6ff;transition:background 0.2s;}
+.chip:hover{background:#dde6ff;}
+/* BACK LINK */
+.back-home{margin-top:20px;text-align:center;}
+.back-home a{color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;transition:color 0.2s;}
+.back-home a:hover{color:var(--gold-light);}
+/* FOOTER */
+footer{position:relative;z-index:1;margin-top:auto;padding:20px;text-align:center;color:rgba(255,255,255,0.35);font-size:0.78rem;}
+footer a{color:var(--gold);text-decoration:none;}
+</style>
+</head>
+<body>
+<!-- TOP NAV -->
+<nav class="top-nav" style="display:flex;justify-content:space-between;align-items:center;">
+
+  <a href="home.html" class="brand" style="text-decoration:none;">
+    
+    
+    <div style="display:flex;align-items:center;gap:8px;">
+      <img src="images/puc_logo.png" alt="Logo" style="width:35px;height:35px;object-fit:contain;">
+      <span style="font-weight:bold;">Premier University Library</span>
+    </div>
+
+  </a>
+
+  <div style="display:flex;gap:8px;">
+    <a href="home.html" class="home-link">🏠 Home</a>
+    <a href="about.html" class="home-link">About</a>
+    <a href="contact.html" class="home-link">Contact</a>
+  </div>
+
+</nav>
+
+<div class="bg">
+  <div class="bg-circle"></div>
+  <div class="bg-circle"></div>
+</div>
+<div class="page">
+  <header class="site-header">
+    <div class="logo-area">
+     <div class="brand-icon">
+  <img src="images/puc_logo.png" alt="Premier University Library Logo" style="width:40px; height:40px; object-fit:contain;">
+</div>
+      <div class="logo-text">
+        <h1>Premier University</h1>
+        <p>Library Management System</p>
+      </div>
+    </div>
+    <div class="header-badge">Est. 2026</div>
+  </header>
+  <div class="hero-section">
+    <h2>Welcome to the<br><span>Digital Library</span></h2>
+    <p>Access books, course materials &amp; academic resources</p>
+  </div>
+  <div class="auth-box">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="loginBody" class="tab-body active">
+      <div class="form-group">
+        <label>Username / Student ID</label>
+        <input type="text" id="loginUser" placeholder="Enter your ID or username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter your password">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Login →</button>
+      <div id="loginMsg" class="msg"></div>
+      <div class="quick-hint">
+        <strong>Quick access:</strong> click a role to autofill
+        <div class="hint-chips">
+          <span class="chip" onclick="fill('admin','admin123')">🛡️ Admin</span>
+          <span class="chip" onclick="fill('teacher1','teach123')">👨‍🏫 Teacher</span>
+          <span class="chip" onclick="fill('student','1234')">👨‍🎓 Student Demo</span>
+          <span class="chip" onclick="fill('idea_guy','idea123')">💡 Idea Contributor</span>
+          <span class="chip" onclick="fill('tester1','test123')">🧪 QA Tester</span>
+        </div>
+      </div>
+    </div>
+    <!-- SIGNUP -->
+    <div id="signupBody" class="tab-body">
+      <div class="form-group">
+        <label>Role</label>
+        <select id="regRole" onchange="toggleStudentFields()">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID / Username</label>
+          <input type="text" id="regId" placeholder="Numeric ID">
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Your name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPass" placeholder="Create a password">
+      </div>
+      <div id="studentFields">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Section</label>
+            <input type="text" id="regSection" placeholder="e.g. A">
+          </div>
+          <div class="form-group">
+            <label>Batch</label>
+            <input type="text" id="regBatch" placeholder="e.g. 46th">
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="doSignup()">Create Account</button>
+      <div id="signupMsg" class="msg"></div>
+    </div>
+  </div>
+  <div class="back-home">
+    <a href="home.html">← Back to Home</a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 Premier University IT &nbsp;|&nbsp; Designed &amp; Developed by <a href="#">Loop Infinity</a>
+</footer>
+<script>
+function switchTab(t){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===(t==='login'?0:1)));
+  document.getElementById('loginBody').classList.toggle('active',t==='login');
+  document.getElementById('signupBody').classList.toggle('active',t==='signup');
+}
+function toggleStudentFields(){
+  document.getElementById('studentFields').style.display=document.getElementById('regRole').value==='student'?'block':'none';
+}
+function fill(u,p){document.getElementById('loginUser').value=u;document.getElementById('loginPass').value=p;}
+function showMsg(id,text,type){const el=document.getElementById(id);el.textContent=text;el.className='msg '+type;}
+function getAccounts(){try{return JSON.parse(localStorage.getItem('pu_accounts')||'[]');}catch{return[];}}
+function saveAccounts(a){localStorage.setItem('pu_accounts',JSON.stringify(a));}
+
+// Seed default accounts if missing
+(function(){
+  var a=getAccounts();
+  if(!a.find(x=>x.user==='teacher1')){
+    a.push({role:'teacher',user:'teacher1',pass:'teach123',name:'Dr. Rahman',dept:'CSE'});
+  }
+  // Idea Contributor role (concept/design input)
+  if(!a.find(x=>x.user==='idea_guy')){
+    a.push({role:'student',user:'idea_guy',pass:'idea123',name:'Idea Contributor',section:'A',batch:'46th',specialRole:'Idea Contributor'});
+  }
+  // QA Tester role
+  if(!a.find(x=>x.user==='tester1')){
+    a.push({role:'student',user:'tester1',pass:'test123',name:'QA Tester',section:'B',batch:'46th',specialRole:'QA Tester'});
+  }
+  saveAccounts(a);
+})();
+
+async function doLogin(){
+  var u=document.getElementById('loginUser').value.trim();
+  var p=document.getElementById('loginPass').value.trim();
+  if(!u||!p){showMsg('loginMsg','Please enter credentials.','error');return;}
+  try{
+    var resp = await PULib.loginAccount({user:u,password:p});
+    if(resp.token){
+      sessionStorage.setItem('pu_user',JSON.stringify(resp.user));
+      localStorage.setItem('isLoggedIn','true');
+      showMsg('loginMsg','Login successful! Redirecting…','success');
+      setTimeout(()=>{window.location.href=resp.user.role==='admin'?'admin.html':resp.user.role==='teacher'?'teacher.html':'student.html';},600);
+      return;
+    }
+  }catch(err){
+    console.warn('Backend login failed:',err.message);
+  }
+
+  if(u==='admin'&&p==='admin123'){
+    sessionStorage.setItem('pu_user',JSON.stringify({role:'admin',name:'admin (Admin)',user:'admin'}));
+    localStorage.setItem('isLoggedIn','true');
+    window.location.href='admin.html';return;
+  }
+  var accs=getAccounts();
+  var found=accs.find(a=>a.user===u&&a.pass===p);
+  if(!found){
+    if(u==='student'&&p==='1234'){found={role:'student',user:'student',name:'Demo Student',section:'A',batch:'46th'};}
+  }
+  if(found){
+    sessionStorage.setItem('pu_user',JSON.stringify(found));
+    localStorage.setItem('isLoggedIn','true');
+    if(found.role==='admin'){window.location.href='admin.html';}
+    else if(found.role==='teacher'){window.location.href='teacher.html';}
+    else{window.location.href='student.html';}
+  } else {
+    showMsg('loginMsg','Wrong username or password.','error');
+  }
+}
+async function doSignup(){
+  var role=document.getElementById('regRole').value;
+  var id=document.getElementById('regId').value.trim();
+  var name=document.getElementById('regName').value.trim();
+  var pass=document.getElementById('regPass').value;
+  var section=document.getElementById('regSection').value.trim();
+  var batch=document.getElementById('regBatch').value.trim();
+  if(!id||!name||!pass){showMsg('signupMsg','Please fill all required fields.','error');return;}
+  if(role==='student'&&!/^\d+$/.test(id)){showMsg('signupMsg','Student ID must be numeric.','error');return;}
+  var accs=getAccounts();
+  if(accs.find(a=>a.user===id)){showMsg('signupMsg','Account already exists.','error');return;}
+  try{
+    var resp = await PULib.registerAccount({user:id,password:pass,name:name,role:role,section:section,batch:batch});
+    if(resp.token){
+      localStorage.setItem('isLoggedIn','true');
+      showMsg('signupMsg','Account created! Redirecting…','success');
+      setTimeout(()=>{window.location.href=resp.user.role==='admin'?'admin.html':resp.user.role==='teacher'?'teacher.html':'student.html';},600);
+      return;
+    }
+  }catch(err){
+    console.warn('Backend signup failed:',err.message);
+  }
+  var acc={role,user:id,name,pass};
+  if(role==='student'){acc.section=section;acc.batch=batch;}
+  accs.push(acc);saveAccounts(accs);
+  showMsg('signupMsg','Account created! You can now login.','success');
+  document.getElementById('regId').value='';document.getElementById('regName').value='';document.getElementById('regPass').value='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// Redirect if already logged in
+try{
+  var u=JSON.parse(sessionStorage.getItem('pu_user'));
+  if(u){
+    localStorage.setItem('isLoggedIn','true');
+    window.location.href=u.role==='admin'?'admin.html':u.role==='teacher'?'teacher.html':'student.html';
+  } else {
+    localStorage.setItem('isLoggedIn','false');
+  }
+}catch(e){
+  localStorage.setItem('isLoggedIn','false');
+}
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

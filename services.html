@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!-- Mohamed fahim | 0222420005101077 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Premier University Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#0a1628;--royal:#1a3a6b;--gold:#c9a84c;--gold-light:#f0d080;--cream:#faf7f0;--text:#1a1a2e;--muted:#6b7280;--border:#e2e8f0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,22,40,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.15);padding:0 40px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.nav-brand-text h1{font-family:'Playfair Display',serif;color:#fff;font-size:1rem;font-weight:700;}
+.nav-brand-text p{color:rgba(255,255,255,0.4);font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;}
+.nav-links{display:flex;gap:4px;}.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;font-weight:500;padding:6px 12px;border-radius:6px;transition:all 0.2s;}.nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+.nav-cta{display:flex;gap:8px;}.btn-outline{padding:7px 18px;border:1px solid rgba(201,168,76,0.5);color:var(--gold-light);background:transparent;border-radius:7px;font-size:0.82rem;font-weight:600;text-decoration:none;}.btn-fill{padding:7px 18px;background:linear-gradient(135deg,var(--gold),#b8932a);color:var(--navy);border:none;border-radius:7px;font-size:0.82rem;font-weight:700;text-decoration:none;}
+.page-hero{background:linear-gradient(135deg,var(--navy),var(--royal));padding:120px 40px 80px;text-align:center;}
+.page-hero .eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.page-hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:2.8rem;font-weight:900;margin-bottom:14px;}
+.page-hero p{color:rgba(255,255,255,0.6);font-size:1rem;max-width:560px;margin:0 auto;}
+.section{padding:80px 40px;}
+.container{max-width:1100px;margin:0 auto;}
+.section-title{text-align:center;margin-bottom:50px;}
+.section-title .eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.section-title h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);font-weight:900;margin-bottom:12px;}
+.section-title p{color:var(--muted);font-size:0.92rem;max-width:540px;margin:0 auto;line-height:1.7;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+.service-card{background:#fff;border-radius:18px;padding:36px;box-shadow:0 2px 14px rgba(0,0,0,0.06);border:1px solid var(--border);transition:all 0.3s;position:relative;}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.12);}
+.service-card .s-num{position:absolute;top:24px;right:24px;font-family:'Playfair Display',serif;font-size:3rem;color:rgba(201,168,76,0.1);font-weight:900;line-height:1;}
+.s-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#eff6ff,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;}
+.service-card h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.15rem;font-weight:700;margin-bottom:10px;}
+.service-card p{color:var(--muted);font-size:0.87rem;line-height:1.65;margin-bottom:16px;}
+.service-features{list-style:none;padding:0;}
+.service-features li{font-size:0.82rem;color:#374151;padding:5px 0;display:flex;align-items:center;gap:8px;}
+.service-features li::before{content:'✓';color:var(--gold);font-weight:700;font-size:0.8rem;}
+.role-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.role-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,0.06);border:1px solid var(--border);}
+.role-head{padding:28px 28px 20px;background:linear-gradient(135deg,var(--navy),var(--royal));}
+.role-head .r-icon{font-size:2.5rem;margin-bottom:12px;}
+.role-head h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.15rem;font-weight:700;}
+.role-head .r-sub{color:rgba(255,255,255,0.55);font-size:0.8rem;margin-top:4px;}
+.role-body{padding:24px 28px;}
+.role-body ul{list-style:none;padding:0;}
+.role-body ul li{font-size:0.85rem;color:#374151;padding:7px 0;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px;}
+.role-body ul li:last-child{border-bottom:none;}
+.role-body ul li span{font-size:1rem;}
+.footer{background:var(--navy);padding:40px;text-align:center;border-top:1px solid rgba(255,255,255,0.07);}
+.footer p{color:rgba(255,255,255,0.3);font-size:0.8rem;}.footer a{color:var(--gold);text-decoration:none;}
+@media(max-width:800px){.navbar{padding:0 20px;}.nav-links{display:none;}.section{padding:50px 20px;}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  
+  <a href="home.html" class="nav-brand">
+    
+    <div class="nav-brand-icon">
+      <img src="images/puc_logo.png" alt="Premier University Logo" style="width:40px;height:40px;object-fit:contain;">
+    </div>
+
+    <div class="nav-brand-text">
+      <h1>Premier University</h1>
+      <p>Library Management</p>
+    </div>
+
+  </a>
+
+  <div class="nav-links">
+    <a href="home.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="product-list.html">Product List</a>
+    <a href="product-details.html">Product Details</a>
+    <a href="blog.html">Blog</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="nav-cta">
+    <a href="index.html" class="btn-outline">Login</a>
+    <a href="index.html" class="btn-fill">Register</a>
+  </div>
+
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Services</div>
+  <h1>What Our Library Offers</h1>
+  <p>Comprehensive digital services for every member of the Premier University academic community.</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">Core Services</div>
+      <h2>Everything the Library Provides</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="s-num">01</div>
+        <div class="s-icon">📖</div>
+        <h3>Book Catalog &amp; Search</h3>
+        <p>Browse our full collection of academic books. Search by title, author, or category. Check real-time availability.</p>
+        <ul class="service-features">
+          <li>Full-text search across titles and authors</li>
+          <li>Category filtering (CSE, EEE, Math…)</li>
+          <li>Real-time availability count</li>
+          <li>PDF download for digital books</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="s-num">02</div>
+        <div class="s-icon">📤</div>
+        <h3>Book Issue &amp; Return</h3>
+        <p>Admins issue physical books to students and process returns. Full history tracked with due dates and overdue alerts.</p>
+        <ul class="service-features">
+          <li>14-day issue period by default</li>
+          <li>Overdue detection &amp; alerts</li>
+          <li>Complete issue history log</li>
+          <li>Student dashboard tracking</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="s-num">03</div>
+        <div class="s-icon">📁</div>
+        <h3>Course Material Upload</h3>
+        <p>Teachers upload PDFs, lecture slides, assignments, and lab manuals for students to download anytime.</p>
+        <ul class="service-features">
+          <li>Support for PDF, DOCX, PPTX, ZIP</li>
+          <li>Access control (all users / teachers only)</li>
+          <li>Course-wise organization</li>
+          <li>Instant download links</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="s-num">04</div>
+        <div class="s-icon">📢</div>
+        <h3>Notice Board</h3>
+        <p>Admin posts library announcements. Visible instantly on dashboards for all students and teachers.</p>
+        <ul class="service-features">
+          <li>XML-powered notice data</li>
+          <li>Real-time display updates</li>
+          <li>Date-stamped entries</li>
+          <li>Admin can delete notices</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="s-num">05</div>
+        <div class="s-icon">👤</div>
+        <h3>User Management</h3>
+        <p>Students and teachers can self-register. Admin views all registered accounts with their details and book counts.</p>
+        <ul class="service-features">
+          <li>Self-registration for students &amp; teachers</li>
+          <li>Admin user overview panel</li>
+          <li>Role-based access control</li>
+          <li>Session-based authentication</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="s-num">06</div>
+        <div class="s-icon">💬</div>
+        <h3>Feedback &amp; Contact</h3>
+        <p>Students and teachers can send messages or feedback to the admin through the integrated contact system.</p>
+        <ul class="service-features">
+          <li>Contact form for students</li>
+          <li>Anonymous feedback option</li>
+          <li>Teacher-to-admin messaging</li>
+          <li>Admin feedback review panel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff;">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">Roles</div>
+      <h2>Services by Role</h2>
+      <p>Each role gets a tailored experience with access to relevant features.</p>
+    </div>
+    <div class="role-cards">
+      <div class="role-card">
+        <div class="role-head"><div class="r-icon">🛡️</div><h3>Admin</h3><div class="r-sub">Full system control</div></div>
+        <div class="role-body"><ul>
+          <li><span>📖</span>Add, edit, delete books</li>
+          <li><span>📤</span>Issue and return books</li>
+          <li><span>📁</span>Upload and manage files</li>
+          <li><span>👥</span>View all registered users</li>
+          <li><span>📢</span>Post and delete notices</li>
+          <li><span>💬</span>Read student feedback</li>
+        </ul></div>
+      </div>
+      <div class="role-card">
+        <div class="role-head"><div class="r-icon">👨‍🏫</div><h3>Teacher</h3><div class="r-sub">Faculty access</div></div>
+        <div class="role-body"><ul>
+          <li><span>📖</span>Browse full book catalog</li>
+          <li><span>📁</span>Upload course materials</li>
+          <li><span>🗑️</span>Delete own uploaded files</li>
+          <li><span>📢</span>View library notices</li>
+          <li><span>✉️</span>Send messages to admin</li>
+        </ul></div>
+      </div>
+      <div class="role-card">
+        <div class="role-head"><div class="r-icon">👨‍🎓</div><h3>Student</h3><div class="r-sub">Academic access</div></div>
+        <div class="role-body"><ul>
+          <li><span>📖</span>Browse &amp; search books</li>
+          <li><span>📤</span>View own issued books</li>
+          <li><span>⚠️</span>See overdue alerts</li>
+          <li><span>📁</span>Download course materials</li>
+          <li><span>📢</span>View library notices</li>
+          <li><span>✉️</span>Send feedback to admin</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Premier University IT &nbsp;|&nbsp; Designed &amp; Developed by <a href="#">Loop Infinity</a></p></footer>
+<script src="theme.js"></script>
+</body>
+</html>

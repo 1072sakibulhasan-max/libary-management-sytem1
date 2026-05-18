@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<!-- Made by: sakibul hasan | 0222410005101072 admin -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Premier University Library</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <img src="images/puc_logo.png" alt="Premier University Logo" class="w-40-img"></div>
+    <h2>Premier University<br>Library</h2>
+    <p>Admin Panel</p>
+  </div>
+  <div class="sidebar-user">
+    <div class="u-name" id="sideUser">Admin</div>
+    <div class="u-role">Administrator</div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item active" onclick="showSection('dashboard')"><span class="icon">🏠</span>Dashboard</a>
+    <a class="nav-item" onclick="showSection('books')"><span class="icon">📖</span>Books</a>
+    <a class="nav-item" onclick="showSection('issue')"><span class="icon">📤</span>Issue &amp; Return</a>
+    <a class="nav-item" onclick="showSection('files')"><span class="icon">📁</span>File Manager</a>
+    <a class="nav-item" onclick="showSection('users')"><span class="icon">👥</span>Users</a>
+  </nav>
+  <nav class="nav-section">
+    <div class="nav-label">Communication</div>
+    <a class="nav-item" onclick="showSection('notices')"><span class="icon">📢</span>Notifications</a>
+    <a class="nav-item" onclick="showSection('feedback')"><span class="icon">💬</span>Feedback</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="logout-btn" onclick="PULib.logout()"><span>🚪</span>Logout</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <h3 id="pageTitle">Dashboard</h3>
+    <div class="topbar-right">
+      <span class="date" id="todayDate"></span>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section id="sec-dashboard">
+      <div class="stat-grid" id="statsGrid"></div>
+      <div class="grid-2-col">
+        <div class="panel">
+          <div class="panel-head"><h4>Recent Issues</h4></div>
+          <div class="panel-body p-0">
+            <table><thead><tr><th>Student</th><th>Book</th><th>Due</th><th>Status</th></tr></thead>
+            <tbody id="recentIssues"></tbody></table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h4>Overdue Books</h4></div>
+          <div class="panel-body p-0">
+            <table><thead><tr><th>Student</th><th>Book</th><th>Days Late</th></tr></thead>
+            <tbody id="overdueTable"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BOOKS ===== -->
+    <section id="sec-books" class="d-none">
+      <div id="bookAlert" class="alert"></div>
+      <div class="panel">
+        <div class="panel-head"><h4>Add New Book</h4><button class="btn btn-primary btn-sm" onclick="PULib.openModal('addBookModal')">+ Add Book</button></div>
+        <div class="panel-body">
+          <div class="search-bar">
+            <input type="text" id="bookSearch" placeholder="Search title, author, ISBN…" oninput="renderBooks()">
+            <select id="bookCatFilter" onchange="renderBooks()">
+              <option value="">All Categories</option>
+              <option>CSE</option><option>EEE</option><option>Mathematics</option><option>Physics</option><option>Business</option>
+            </select>
+            <select id="bookStatusFilter" onchange="renderBooks()">
+              <option value="">All Status</option>
+              <option>Available</option><option>Issued</option>
+            </select>
+          </div>
+          <table>
+            <thead><tr><th>#</th><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Qty</th><th>Avail.</th><th>Status</th><th>File</th><th>Actions</th></tr></thead>
+            <tbody id="booksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ISSUE/RETURN ===== -->
+    <section id="sec-issue" class="d-none">
+      <div id="issueAlert" class="alert"></div>
+      <div class="sec-tabs">
+        <button class="sec-tab active" onclick="switchIssueTabs('issue-tab',this)">Issue Book</button>
+        <button class="sec-tab" onclick="switchIssueTabs('return-tab',this)">Return Book</button>
+        <button class="sec-tab" onclick="switchIssueTabs('history-tab',this)">All Records</button>
+      </div>
+      <div id="issue-tab">
+        <div class="panel"><div class="panel-head"><h4>Issue a Book</h4></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="f-group"><label>Student ID / Name</label><input type="text" id="issueStudent" placeholder="Student ID"></div>
+            <div class="f-group"><label>Student Name</label><input type="text" id="issueStudentName" placeholder="Full name"></div>
+            <div class="f-group"><label>Book</label>
+              <select id="issueBookId"><option value="">-- Select Book --</option></select>
+            </div>
+            <div class="f-group"><label>Issue Date</label><input type="date" id="issueDate"></div>
+            <div class="f-group"><label>Due Date (14 days)</label><input type="date" id="issueDue"></div>
+          </div>
+          <button class="btn btn-primary mt-16" onclick="issueBook()">Issue Book</button>
+        </div></div>
+      </div>
+      <div id="return-tab" class="d-none">
+        <div class="panel"><div class="panel-head"><h4>Return a Book</h4></div>
+        <div class="panel-body">
+          <div class="search-bar">
+            <input type="text" id="returnSearch" placeholder="Search by student ID or book title…" oninput="renderReturnTable()">
+          </div>
+          <table>
+            <thead><tr><th>Issue ID</th><th>Student</th><th>Book</th><th>Issued</th><th>Due</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="returnBody"></tbody>
+          </table>
+        </div></div>
+      </div>
+      <div id="history-tab" class="d-none">
+        <div class="panel"><div class="panel-head"><h4>All Issue Records</h4></div>
+        <div class="panel-body p-0">
+          <table>
+            <thead><tr><th>ID</th><th>Student</th><th>Book</th><th>Issued</th><th>Due</th><th>Returned</th><th>Status</th></tr></thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ===== FILES ===== -->
+    <section id="sec-files" class="d-none">
+      <div id="fileAlert" class="alert"></div>
+      <div class="panel">
+        <div class="panel-head"><h4>Upload Course Material / Book PDF</h4></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="f-group"><label>File Title</label><input type="text" id="fileTitle" placeholder="e.g. Week 1 Lecture Slides"></div>
+            <div class="f-group"><label>Category</label>
+              <select id="fileCategory">
+                <option>Course Notes</option><option>Lecture Slides</option><option>Assignment</option><option>Lab Manual</option><option>Book PDF</option><option>Other</option>
+              </select>
+            </div>
+            <div class="f-group"><label>Course</label><input type="text" id="fileCourse" placeholder="e.g. CSE 101"></div>
+            <div class="f-group"><label>Visible To</label>
+              <select id="fileAccess"><option value="all">All (Students &amp; Teachers)</option><option value="teacher">Teachers Only</option></select>
+            </div>
+          </div>
+          <div class="f-group mt-14"><label>Select File</label><input type="file" id="fileInput" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip"></div>
+          <button class="btn btn-primary mt-16" onclick="uploadFile()">Upload File</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h4>File Library</h4>
+          <div class="search-bar m-0">
+            <input type="text" id="fileSearch" placeholder="Search files…" oninput="renderFiles()">
+            <select id="fileCatFilter" onchange="renderFiles()"><option value="">All Categories</option>
+              <option>Course Notes</option><option>Lecture Slides</option><option>Assignment</option><option>Lab Manual</option><option>Book PDF</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="panel-body p-0">
+          <table><thead><tr><th>Title</th><th>Category</th><th>Course</th><th>Uploaded</th><th>Access</th><th>File</th><th>Action</th></tr></thead>
+          <tbody id="fileBody"></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== USERS ===== -->
+    <section id="sec-users" class="d-none">
+      <div class="panel">
+        <div class="panel-head"><h4>Registered Users</h4></div>
+        <div class="panel-body p-0">
+          <table><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Section</th><th>Batch</th><th>Books Issued</th></tr></thead>
+          <tbody id="usersBody"></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NOTICES ===== -->
+    <section id="sec-notices" class="d-none">
+      <div id="noticeAlert" class="alert"></div>
+      <div class="panel">
+        <div class="panel-head"><h4>Post Notification</h4></div>
+        <div class="panel-body">
+          <div class="f-group"><label>Message</label>
+            <textarea id="noticeText" rows="3" class="notice-textarea" placeholder="Type your notification…"></textarea>
+          </div>
+          <button class="btn btn-primary mt-12" onclick="postNotice()">Post Notification</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h4>All Notifications</h4></div>
+        <div class="panel-body" id="noticesList"></div>
+      </div>
+    </section>
+
+    <!-- ===== FEEDBACK ===== -->
+    <section id="sec-feedback" class="d-none">
+      <div class="panel">
+        <div class="panel-head"><h4>Received Feedback</h4></div>
+        <div class="panel-body" id="feedbackList"></div>
+      </div>
+    </section>
+
+  </div>
+  <div class="main-footer">&copy; 2026 Premier University IT &nbsp;|&nbsp; Developed by <strong>Digiden IT</strong></div>
+</main>
+
+<!-- ADD BOOK MODAL -->
+<div class="modal-overlay" id="addBookModal">
+  <div class="modal">
+    <div class="modal-head"><h4>Add New Book</h4><button class="modal-close" onclick="PULib.closeModal('addBookModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="f-group"><label for="b_title">Title *</label><input type="text" id="b_title" title="Title" placeholder="Enter title" required></div>
+        <div class="f-group"><label for="b_author">Author *</label><input type="text" id="b_author" title="Author" placeholder="Enter author" required></div>
+        <div class="f-group"><label for="b_isbn">ISBN</label><input type="text" id="b_isbn" title="ISBN" placeholder="Enter ISBN"></div>
+        <div class="f-group"><label for="b_cat">Category</label>
+          <select id="b_cat" title="Category"><option>CSE</option><option>EEE</option><option>Mathematics</option><option>Physics</option><option>Business</option><option>Other</option></select>
+        </div>
+        <div class="f-group"><label for="b_qty">Quantity</label><input type="number" id="b_qty" value="1" min="1" title="Quantity" placeholder="1"></div>
+        <div class="f-group"><label for="b_file">Attach PDF (optional)</label><input type="file" id="b_file" accept=".pdf" title="Attach PDF"></div>
+        <div class="f-group"><label for="b_cover">Cover Image (optional)</label><input type="file" id="b_cover" accept="image/*" title="Cover Image"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="PULib.closeModal('addBookModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="PULib.addBook()">Add Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT BOOK MODAL -->
+<div class="modal-overlay" id="editBookModal">
+  <div class="modal">
+    <div class="modal-head"><h4>Edit Book</h4><button class="modal-close" onclick="PULib.closeModal('editBookModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="eb_id">
+      <div class="form-grid">
+        <div class="f-group"><label for="eb_title">Title</label><input type="text" id="eb_title" title="Title" placeholder="Title"></div>
+        <div class="f-group"><label for="eb_author">Author</label><input type="text" id="eb_author" title="Author" placeholder="Author"></div>
+        <div class="f-group"><label for="eb_isbn">ISBN</label><input type="text" id="eb_isbn" title="ISBN" placeholder="ISBN"></div>
+        <div class="f-group"><label for="eb_cat">Category</label>
+          <select id="eb_cat" title="Category"><option>CSE</option><option>EEE</option><option>Mathematics</option><option>Physics</option><option>Business</option><option>Other</option></select>
+        </div>
+        <div class="f-group"><label for="eb_qty">Quantity</label><input type="number" id="eb_qty" min="1" title="Quantity" placeholder="Quantity"></div>
+        <div class="f-group"><label for="eb_avail">Available</label><input type="number" id="eb_avail" min="0" title="Available" placeholder="Available"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="PULib.closeModal('editBookModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditBook()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="lib.js"></script>
+<script>
+// --- AUTH ---
+var user = PULib.requireAuth('admin');
+document.getElementById('sideUser').textContent = user ? user.name||user.user : 'Admin';
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
+// --- SECTION SWITCH ---
+var sections = ['dashboard','books','issue','files','users','notices','feedback'];
+function showSection(name){
+  sections.forEach(s=>{
+    document.getElementById('sec-'+s).style.display = s===name?'block':'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active', el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+name+"'"));
+  });
+  var titles = {dashboard:'Dashboard',books:'Book Management',issue:'Issue & Return',files:'File Manager',users:'Users',notices:'Notifications',feedback:'Feedback'};
+  document.getElementById('pageTitle').textContent = titles[name]||name;
+  if(name==='dashboard') renderDashboard();
+  else if(name==='books') renderBooks();
+  else if(name==='issue') { renderIssueBookSelect(); renderReturnTable(); renderHistory(); }
+  else if(name==='files') renderFiles();
+  else if(name==='users') renderUsers();
+  else if(name==='notices') renderNotices();
+  else if(name==='feedback') renderFeedback();
+}
+
+// --- DASHBOARD ---
+function renderDashboard(){
+  var books=PULib.getBooks(), issues=PULib.getIssues(), files=PULib.getFiles();
+  var totalBooks=books.reduce((s,b)=>s+b.quantity,0);
+  var available=books.reduce((s,b)=>s+b.available,0);
+  var activeIssues=issues.filter(i=>!i.returned).length;
+  var overdue=issues.filter(i=>!i.returned&&PULib.isOverdue(i.dueDate)).length;
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="s-icon">📚</div><div><div class="s-val">${books.length}</div><div class="s-lbl">Book Titles</div></div></div>
+    <div class="stat-card" style="border-color:#27ae60"><div class="s-icon">✅</div><div><div class="s-val">${available}</div><div class="s-lbl">Available Copies</div></div></div>
+    <div class="stat-card" style="border-color:#c9a84c"><div class="s-icon">📤</div><div><div class="s-val">${activeIssues}</div><div class="s-lbl">Books Issued</div></div></div>
+    <div class="stat-card" style="border-color:#c0392b"><div class="s-icon">⚠️</div><div><div class="s-val">${overdue}</div><div class="s-lbl">Overdue</div></div></div>
+    <div class="stat-card" style="border-color:#7c3aed"><div class="s-icon">📁</div><div><div class="s-val">${files.length}</div><div class="s-lbl">Files Uploaded</div></div></div>
+  `;
+  var recent=issues.slice(-5).reverse();
+  document.getElementById('recentIssues').innerHTML=recent.length?recent.map(i=>`
+    <tr><td>${PULib.escHtml(i.studentName||i.studentId)}</td><td>${PULib.escHtml(i.bookTitle)}</td><td>${PULib.formatDate(i.dueDate)}</td>
+    <td>${i.returned?'<span class="badge badge-green">Returned</span>':PULib.isOverdue(i.dueDate)?'<span class="badge badge-red">Overdue</span>':'<span class="badge badge-gold">Active</span>'}</td></tr>
+  `).join(''):'<tr><td colspan="4"><div class="empty-state"><p>No issues yet.</p></div></td></tr>';
+  var overdueList=issues.filter(i=>!i.returned&&PULib.isOverdue(i.dueDate));
+  document.getElementById('overdueTable').innerHTML=overdueList.length?overdueList.map(i=>{
+    var days=Math.floor((new Date()-new Date(i.dueDate))/(1000*60*60*24));
+    return`<tr><td>${PULib.escHtml(i.studentName||i.studentId)}</td><td>${PULib.escHtml(i.bookTitle)}</td><td><span class="badge badge-red">${days} days</span></td></tr>`;
+  }).join(''):'<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--muted);">✅ No overdue books</td></tr>';
+}
+
+// --- BOOKS ---
+function renderBooks(){
+  var books=PULib.getBooks();
+  var search=document.getElementById('bookSearch').value.toLowerCase();
+  var cat=document.getElementById('bookCatFilter').value;
+  var status=document.getElementById('bookStatusFilter').value;
+  var filtered=books.filter(b=>{
+    var matchSearch=!search||(b.title.toLowerCase().includes(search)||b.author.toLowerCase().includes(search)||(b.isbn&&b.isbn.includes(search)));
+    var matchCat=!cat||b.category===cat;
+    var matchStatus=!status||b.status===status;
+    return matchSearch&&matchCat&&matchStatus;
+  });
+  document.getElementById('booksBody').innerHTML=filtered.length?filtered.map(b=>`
+    <tr>
+      <td>${b.id}</td><td><strong>${PULib.escHtml(b.title)}</strong></td><td>${PULib.escHtml(b.author)}</td>
+      <td>${PULib.escHtml(b.isbn||'—')}</td><td>${b.category}</td><td>${b.quantity}</td><td>${b.available}</td>
+      <td><span class="badge ${b.available>0?'badge-green':'badge-red'}">${b.available>0?'Available':'Out of Stock'}</span></td>
+      <td>${b.fileData?`<a href="${b.fileData}" download="${PULib.escHtml(b.fileName||'book.pdf')}" class="btn btn-sm" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;">📄 PDF</a>`:'—'}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-gold" onclick="openEditBook(${b.id})">✏️</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteBook(${b.id})">🗑️</button>
+      </td>
+    </tr>
+  `).join(''):'<tr><td colspan="10"><div class="empty-state"><div class="e-icon">📭</div><p>No books found.</p></div></td></tr>';
+}
+
+// addBook logic is now moved and globally accessible in lib.js through PULib.addBook()
+
+function openEditBook(id){
+  var books=PULib.getBooks(),b=books.find(x=>x.id===id);if(!b)return;
+  document.getElementById('eb_id').value=id;
+  document.getElementById('eb_title').value=b.title;
+  document.getElementById('eb_author').value=b.author;
+  document.getElementById('eb_isbn').value=b.isbn||'';
+  document.getElementById('eb_cat').value=b.category;
+  document.getElementById('eb_qty').value=b.quantity;
+  document.getElementById('eb_avail').value=b.available;
+  PULib.openModal('editBookModal');
+}
+function saveEditBook(){
+  var id=parseInt(document.getElementById('eb_id').value);
+  var books=PULib.getBooks(),i=books.findIndex(x=>x.id===id);if(i<0)return;
+  books[i].title=document.getElementById('eb_title').value.trim();
+  books[i].author=document.getElementById('eb_author').value.trim();
+  books[i].isbn=document.getElementById('eb_isbn').value.trim();
+  books[i].category=document.getElementById('eb_cat').value;
+  books[i].quantity=parseInt(document.getElementById('eb_qty').value)||books[i].quantity;
+  books[i].available=parseInt(document.getElementById('eb_avail').value);
+  PULib.saveBooks(books);PULib.closeModal('editBookModal');
+  PULib.showAlert('bookAlert','Book updated!','success');renderBooks();
+}
+function deleteBook(id){
+  if(!confirm('Delete this book?'))return;
+  var books=PULib.getBooks().filter(b=>b.id!==id);PULib.saveBooks(books);renderBooks();
+}
+
+// --- ISSUE ---
+function renderIssueBookSelect(){
+  var books=PULib.getBooks().filter(b=>b.available>0);
+  document.getElementById('issueBookId').innerHTML='<option value="">-- Select Book --</option>'+books.map(b=>`<option value="${b.id}">${PULib.escHtml(b.title)} (${b.available} avail.)</option>`).join('');
+  document.getElementById('issueDate').value=PULib.today();
+  document.getElementById('issueDue').value=PULib.addDays(PULib.today(),14);
+}
+function issueBook(){
+  var sid=document.getElementById('issueStudent').value.trim();
+  var sname=document.getElementById('issueStudentName').value.trim();
+  var bid=parseInt(document.getElementById('issueBookId').value);
+  var idate=document.getElementById('issueDate').value;
+  var ddate=document.getElementById('issueDue').value;
+  if(!sid||!bid||!idate){PULib.showAlert('issueAlert','Please fill all required fields.','error');return;}
+  var books=PULib.getBooks(),bi=books.findIndex(b=>b.id===bid);
+  if(bi<0||books[bi].available<1){PULib.showAlert('issueAlert','Book not available.','error');return;}
+  books[bi].available--;if(books[bi].available===0)books[bi].status='Issued';
+  PULib.saveBooks(books);
+  var issues=PULib.getIssues();
+  issues.push({id:PULib.nextId(issues),studentId:sid,studentName:sname||sid,bookId:bid,bookTitle:books[bi].title,issueDate:idate,dueDate:ddate,returned:false});
+  PULib.saveIssues(issues);
+  PULib.showAlert('issueAlert','Book issued successfully!','success');
+  renderIssueBookSelect();renderReturnTable();renderHistory();
+  document.getElementById('issueStudent').value='';document.getElementById('issueStudentName').value='';
+}
+function renderReturnTable(){
+  var search=document.getElementById('returnSearch').value.toLowerCase();
+  var issues=PULib.getIssues().filter(i=>!i.returned);
+  var filtered=!search?issues:issues.filter(i=>(i.studentId+' '+i.studentName+' '+i.bookTitle).toLowerCase().includes(search));
+  document.getElementById('returnBody').innerHTML=filtered.length?filtered.map(i=>`
+    <tr><td>#${i.id}</td><td>${PULib.escHtml(i.studentName||i.studentId)}</td><td>${PULib.escHtml(i.bookTitle)}</td>
+    <td>${PULib.formatDate(i.issueDate)}</td><td>${PULib.formatDate(i.dueDate)}</td>
+    <td>${PULib.isOverdue(i.dueDate)?'<span class="badge badge-red">Overdue</span>':'<span class="badge badge-gold">Active</span>'}</td>
+    <td><button class="btn btn-sm btn-success" onclick="returnBook(${i.id})">Return</button></td></tr>
+  `).join(''):'<tr><td colspan="7"><div class="empty-state"><p>No active issues.</p></div></td></tr>';
+}
+function returnBook(id){
+  var issues=PULib.getIssues(),i=issues.findIndex(x=>x.id===id);if(i<0)return;
+  issues[i].returned=true;issues[i].returnDate=PULib.today();
+  var books=PULib.getBooks(),bi=books.findIndex(b=>b.id===issues[i].bookId);
+  if(bi>=0){books[bi].available++;books[bi].status='Available';PULib.saveBooks(books);}
+  PULib.saveIssues(issues);PULib.showAlert('issueAlert','Book returned!','success');
+  renderReturnTable();renderHistory();
+}
+function renderHistory(){
+  var issues=PULib.getIssues();
+  document.getElementById('historyBody').innerHTML=issues.length?issues.slice().reverse().map(i=>`
+    <tr><td>#${i.id}</td><td>${PULib.escHtml(i.studentName||i.studentId)}</td><td>${PULib.escHtml(i.bookTitle)}</td>
+    <td>${PULib.formatDate(i.issueDate)}</td><td>${PULib.formatDate(i.dueDate)}</td>
+    <td>${i.returned?PULib.formatDate(i.returnDate):'—'}</td>
+    <td>${i.returned?'<span class="badge badge-green">Returned</span>':PULib.isOverdue(i.dueDate)?'<span class="badge badge-red">Overdue</span>':'<span class="badge badge-gold">Active</span>'}</td></tr>
+  `).join(''):'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);">No records.</td></tr>';
+}
+function switchIssueTabs(tabId,btn){
+  ['issue-tab','return-tab','history-tab'].forEach(t=>document.getElementById(t).style.display=t===tabId?'block':'none');
+  document.querySelectorAll('#sec-issue .sec-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tabId==='return-tab')renderReturnTable();
+  if(tabId==='history-tab')renderHistory();
+}
+
+// --- FILES ---
+async function uploadFile(){
+  var title=document.getElementById('fileTitle').value.trim();
+  var file=document.getElementById('fileInput').files[0];
+  if(!title||!file){PULib.showAlert('fileAlert','Title and file are required.','error');return;}
+  if(file.size>5*1024*1024){PULib.showAlert('fileAlert','File too large. Max 5MB.','error');return;}
+  var data=await PULib.readFileAsBase64(file);
+  var files=PULib.getFiles();
+  files.push({id:PULib.nextId(files),title,category:document.getElementById('fileCategory').value,
+    course:document.getElementById('fileCourse').value.trim(),access:document.getElementById('fileAccess').value,
+    fileName:file.name,fileSize:file.size,fileData:data,uploadedDate:PULib.today(),uploadedBy:user.name||user.user});
+  PULib.saveFiles(files);
+  PULib.showAlert('fileAlert','File uploaded successfully!','success');
+  document.getElementById('fileTitle').value='';document.getElementById('fileInput').value='';document.getElementById('fileCourse').value='';
+  renderFiles();
+}
+function renderFiles(){
+  var files=PULib.getFiles();
+  var search=document.getElementById('fileSearch').value.toLowerCase();
+  var cat=document.getElementById('fileCatFilter').value;
+  var filtered=files.filter(f=>{
+    var ms=!search||(f.title.toLowerCase().includes(search)||(f.course&&f.course.toLowerCase().includes(search)));
+    var mc=!cat||f.category===cat;
+    return ms&&mc;
+  });
+  document.getElementById('fileBody').innerHTML=filtered.length?filtered.map(f=>`
+    <tr><td><strong>${PULib.escHtml(f.title)}</strong></td><td><span class="badge badge-blue">${f.category}</span></td>
+    <td>${PULib.escHtml(f.course||'—')}</td><td>${PULib.formatDate(f.uploadedDate)}</td>
+    <td>${f.access==='all'?'<span class="badge badge-green">All</span>':'<span class="badge badge-gold">Teachers</span>'}</td>
+    <td><a href="${f.fileData}" download="${PULib.escHtml(f.fileName)}" class="btn btn-sm" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;">⬇ ${PULib.escHtml(f.fileName)}</a></td>
+    <td><button class="btn btn-sm btn-danger" onclick="deleteFile(${f.id})">🗑️</button></td></tr>
+  `).join(''):'<tr><td colspan="7"><div class="empty-state"><div class="e-icon">📂</div><p>No files uploaded yet.</p></div></td></tr>';
+}
+function deleteFile(id){
+  if(!confirm('Delete this file?'))return;
+  PULib.saveFiles(PULib.getFiles().filter(f=>f.id!==id));renderFiles();
+}
+
+// --- USERS ---
+function renderUsers(){
+  var accounts=PULib.getAccounts();
+  var issues=PULib.getIssues();
+  document.getElementById('usersBody').innerHTML=accounts.length?accounts.map(a=>{
+    var count=issues.filter(i=>i.studentId===a.user&&!i.returned).length;
+    return`<tr><td>${PULib.escHtml(a.user)}</td><td>${PULib.escHtml(a.name)}</td>
+    <td><span class="badge ${a.role==='teacher'?'badge-gold':a.role==='admin'?'badge-red':'badge-blue'}">${a.role}</span></td>
+    <td>${PULib.escHtml(a.section||'—')}</td><td>${PULib.escHtml(a.batch||'—')}</td><td>${count||0}</td></tr>`;
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);">No registered users.</td></tr>';
+}
+
+// --- NOTICES ---
+function postNotice(){
+  var text=document.getElementById('noticeText').value.trim();
+  if(!text){PULib.showAlert('noticeAlert','Please enter a message.','error');return;}
+  var notices=PULib.getNotices();
+  notices.push({id:PULib.nextId(notices),text,date:PULib.today(),by:user.name||user.user});
+  PULib.saveNotices(notices);document.getElementById('noticeText').value='';
+  PULib.showAlert('noticeAlert','Notification posted!','success');renderNotices();
+}
+function deleteNotice(id){
+  PULib.saveNotices(PULib.getNotices().filter(n=>n.id!==id));renderNotices();
+}
+function renderNotices(){
+  var notices=PULib.getNotices();
+  document.getElementById('noticesList').innerHTML=notices.length?notices.slice().reverse().map(n=>`
+    <div style="background:#f8f9fb;border-left:4px solid var(--royal);padding:12px 16px;border-radius:8px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+      <div><p style="font-size:0.9rem;">${PULib.escHtml(n.text)}</p><p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">${PULib.formatDate(n.date)} · ${PULib.escHtml(n.by)}</p></div>
+      <button class="btn btn-sm btn-danger" onclick="deleteNotice(${n.id})">🗑️</button>
+    </div>
+  `).join(''):'<p style="color:var(--muted)">No notifications.</p>';
+}
+
+// --- FEEDBACK ---
+function renderFeedback(){
+  var fb=PULib.getFeedback();
+  document.getElementById('feedbackList').innerHTML=fb.length?fb.slice().reverse().map(f=>`
+    <div style="background:#f8f9fb;padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;"><strong style="font-size:0.9rem;">${PULib.escHtml(f.name||'Anonymous')}</strong><span style="font-size:0.75rem;color:var(--muted);">${PULib.formatDate(f.date)}</span></div>
+      <p style="font-size:0.88rem;margin-top:6px;color:#374151;">${PULib.escHtml(f.message)}</p>
+    </div>
+  `).join(''):'<p style="color:var(--muted)">No feedback received yet.</p>';
+}
+
+// Init
+renderDashboard();
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

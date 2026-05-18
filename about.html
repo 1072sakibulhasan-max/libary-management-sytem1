@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Premier University Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#0a1628;--royal:#1a3a6b;--gold:#c9a84c;--gold-light:#f0d080;--cream:#faf7f0;--white:#ffffff;--text:#1a1a2e;--muted:#6b7280;--border:#e2e8f0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);}
+/* NAV - same as home */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,22,40,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.15);padding:0 40px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.nav-brand-text h1{font-family:'Playfair Display',serif;color:#fff;font-size:1rem;font-weight:700;}
+.nav-brand-text p{color:rgba(255,255,255,0.4);font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;}
+.nav-links{display:flex;gap:4px;}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;font-weight:500;padding:6px 12px;border-radius:6px;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+.nav-cta{display:flex;gap:8px;}
+.btn-outline{padding:7px 18px;border:1px solid rgba(201,168,76,0.5);color:var(--gold-light);background:transparent;border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer;text-decoration:none;}
+.btn-fill{padding:7px 18px;background:linear-gradient(135deg,var(--gold),#b8932a);color:var(--navy);border:none;border-radius:7px;font-size:0.82rem;font-weight:700;cursor:pointer;text-decoration:none;}
+/* PAGE HERO */
+.page-hero{background:linear-gradient(135deg,var(--navy),var(--royal));padding:120px 40px 80px;text-align:center;}
+.page-hero .eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.page-hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:2.8rem;font-weight:900;margin-bottom:14px;}
+.page-hero p{color:rgba(255,255,255,0.6);font-size:1rem;max-width:560px;margin:0 auto;}
+/* SECTIONS */
+.section{padding:80px 40px;}
+.container{max-width:1100px;margin:0 auto;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-grid img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--royal),var(--navy));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.about-img{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--royal),var(--navy));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:6rem;box-shadow:0 20px 50px rgba(0,0,0,0.2);}
+.about-text .eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.about-text h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--navy);margin-bottom:18px;}
+.about-text p{color:var(--muted);font-size:0.92rem;line-height:1.75;margin-bottom:14px;}
+.about-text ul{list-style:none;padding:0;}
+.about-text ul li{padding:8px 0;border-bottom:1px solid var(--border);font-size:0.9rem;display:flex;gap:10px;align-items:center;}
+.about-text ul li::before{content:'✦';color:var(--gold);font-size:0.7rem;flex-shrink:0;}
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+.value-card{background:#fff;border-radius:14px;padding:28px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,0.05);}
+.value-icon{font-size:2rem;margin-bottom:14px;}
+.value-card h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1rem;margin-bottom:8px;}
+.value-card p{color:var(--muted);font-size:0.85rem;line-height:1.6;}
+/* TECH STACK */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;}
+.tech-item{background:#fff;border-radius:12px;padding:20px;text-align:center;border:1px solid var(--border);}
+.tech-item .t-icon{font-size:2rem;margin-bottom:10px;}
+.tech-item h4{font-size:0.85rem;font-weight:600;color:var(--navy);}
+.tech-item p{font-size:0.75rem;color:var(--muted);margin-top:4px;}
+/* TEAM SECTION */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;}
+.team-card{background:#fff;border-radius:20px;padding:36px 24px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,0.07);border:1px solid var(--border);}
+.team-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--royal),var(--navy));color:var(--gold-light);font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;}
+.team-card h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.05rem;font-weight:700;margin-bottom:4px;}
+.team-role{font-size:0.75rem;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.team-id{font-size:0.72rem;color:var(--muted);background:#f4f6f9;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-family:monospace;}
+.team-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+.section-title{text-align:center;margin-bottom:50px;}
+.section-title .eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.section-title h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);font-weight:900;line-height:1.2;margin-bottom:12px;}
+.section-title p{color:var(--muted);font-size:0.92rem;max-width:540px;margin:0 auto;line-height:1.7;}
+/* FOOTER */
+.footer{background:var(--navy);padding:40px;text-align:center;border-top:1px solid rgba(255,255,255,0.07);}
+.footer p{color:rgba(255,255,255,0.3);font-size:0.8rem;}
+.footer a{color:var(--gold);text-decoration:none;}
+@media(max-width:800px){.navbar{padding:0 20px;}.nav-links{display:none;}.about-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+
+  <a href="home.html" class="nav-brand">
+
+    <div class="nav-brand-icon">
+      <img src="images/puc_logo.png" alt="Premier University Logo"
+           style="width:40px;height:40px;object-fit:contain;">
+    </div>
+
+    <div class="nav-brand-text">
+      <h1>Premier University</h1>
+      <p>Library Management</p>
+    </div>
+
+  </a>
+
+  <div class="nav-links">
+    <a href="home.html">Home</a>
+    <a href="about.html" class="active">About</a>
+    <a href="services.html">Services</a>
+    <a href="product-list.html">Product List</a>
+    <a href="product-details.html">Product Details</a>
+    <a href="blog.html">Blog</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="nav-cta">
+    <a href="index.html" class="btn-outline">Login</a>
+    <a href="index.html" class="btn-fill">Register</a>
+  </div>
+
+</nav>
+<div class="page-hero">
+  <div class="eyebrow">About Us</div>
+  <h1>About the Library System</h1>
+  <p>Learn about Premier University's digital library — its mission, team, and the technology behind it.</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img"><img src="images/library.jpeg" alt="Premier University Library" style="width:100%;height: 100%;object-fit:contain;"></div>
+      <div class="about-text">
+        <div class="eyebrow">Our Mission</div>
+        <h2>A Modern Library for a Modern Campus</h2>
+        <p>The Premier University Library Management System was built as an Internet Programming Lab project to demonstrate full-stack web development skills using HTML, CSS, JavaScript, and local data persistence.</p>
+        <p>Our goal was to create a real, usable system that benefits students, teachers, and administrators — replacing manual paperwork with a seamless digital experience.</p>
+        <ul>
+          <li>Built for Premier University's academic community</li>
+          <li>Multi-role access: Admin, Teacher, Student</li>
+          <li>Real CRUD operations for books and materials</li>
+          <li>XML-powered notice board with JSON conversion</li>
+          <li>Responsive design for all screen sizes</li>
+          <li>LocalStorage + SessionStorage data persistence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff;">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">Our Values</div>
+      <h2>What Drives This Project</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card"><div class="value-icon">🎓</div><h3>Academic Excellence</h3><p>Designed specifically for the academic environment of Premier University, supporting both teaching and learning.</p></div>
+      <div class="value-card"><div class="value-icon">🔓</div><h3>Open Access</h3><p>Every registered student has equal access to the book catalog and course materials uploaded by faculty.</p></div>
+      <div class="value-card"><div class="value-icon">💡</div><h3>Innovation</h3><p>Using modern web technologies including AJAX, XML parsing, JSON data handling, and dynamic DOM manipulation.</p></div>
+      <div class="value-card"><div class="value-icon">🤝</div><h3>Collaboration</h3><p>Built collaboratively by a 4-member team, each contributing unique skills to different parts of the system.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">Technology Stack</div>
+      <h2>Built With</h2>
+      <p>Modern web technologies used throughout this project.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="t-icon">🌐</div><h4>HTML5</h4><p>Semantic structure</p></div>
+      <div class="tech-item"><div class="t-icon">🎨</div><h4>CSS3</h4><p>Custom responsive design</p></div>
+      <div class="tech-item"><div class="t-icon">⚡</div><h4>JavaScript</h4><p>Dynamic interactions</p></div>
+      <div class="tech-item"><div class="t-icon">📦</div><h4>Bootstrap</h4><p>UI components</p></div>
+      <div class="tech-item"><div class="t-icon">🔄</div><h4>AJAX</h4><p>Async data loading</p></div>
+      <div class="tech-item"><div class="t-icon">📋</div><h4>JSON / XML</h4><p>Data formats</p></div>
+      <div class="tech-item"><div class="t-icon">💾</div><h4>localStorage</h4><p>Client-side storage</p></div>
+      <div class="tech-item"><div class="t-icon">🔐</div><h4>sessionStorage</h4><p>Auth management</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff;">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Our Team</div>
+      <h2>Meet the Developers</h2>
+      <p>A group of passionate students who built this system from scratch.</p>
+    </div>
+
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-avatar" style="width:120px;height:120px;overflow:hidden;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+  <img src="images/sakib.jpeg" alt="Sakibul Hasan" style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
+        <h3>Sakibul Hasan</h3>
+        <div class="team-role">Project Lead & Frontend Developer</div>
+        <div class="team-id">ID: 0222410005101072</div>
+        <p class="team-desc">Led overall system architecture. Built homepage, hero section, slider, and About page.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="width:120px;height:120px;overflow:hidden;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+  <img src="images/fahim.jpg" alt="Mohammad Fahim" style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
+        <h3>Mohammad Fahim</h3>
+        <div class="team-role">Backend Logic & CRUD Developer</div>
+        <div class="team-id">ID: 0222420005101077</div>
+        <p class="team-desc">Built library.js core engine, CRUD operations, admin dashboard, and user management system.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="width:120px;height:120px;overflow:hidden;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+  <img src="images/tarek.jpeg" alt="Md Tarek Aziz" style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
+        <h3>Md Tarek Aziz</h3>
+        <div class="team-role">UI/UX & Student Portal Developer</div>
+        <div class="team-id">ID: 022420005101073</div>
+        <p class="team-desc">Designed CSS system, student dashboard, and course materials interface.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="width:120px;height:120px;overflow:hidden;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+  <img src="images/joyanta.jpeg" alt="Joyanta Chowdhury Obik" style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
+        <h3>Joyanta Chowdhury Obik</h3>
+        <div class="team-role">Teacher Portal & QA Tester</div>
+        <div class="team-id">ID: 0222420005101054</div>
+        <p class="team-desc">Developed teacher dashboard, file upload system, and handled overall testing.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2026 Premier University IT &nbsp;|&nbsp; Designed &amp; Developed by <a href="#">Loop Infinity</a></p>
+</footer>
+<script src="theme.js"></script>
+</body>
+</html>
